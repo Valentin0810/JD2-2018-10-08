@@ -15,7 +15,7 @@
 <body>
 <div>
     <c:forEach items="${requestScope.books}" var="book">
-        <p>${book.id} - ${book.author} - ${book.name} - ${book.the_year_of_publishing}</p>
+        <p>${book.id} - ${book.author} - ${book.name} - ${book.theYearOfPublishing}</p>
     </c:forEach>
 </div>
 </body>
