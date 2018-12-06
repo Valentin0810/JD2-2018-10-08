@@ -1,8 +1,8 @@
 package com.varvashevich.entity;
 
+import com.varvashevich.connection.ConnectionManager;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,16 +14,16 @@ import static junit.framework.TestCase.assertNotNull;
 
 public class ReaderTest {
 
-    private static final SessionFactory FACTORY = new Configuration().configure().buildSessionFactory();
+    private static final SessionFactory SESSION_FACTORY = ConnectionManager.getFactory();
 
-    @AfterClass
-    public static void closeFactory() {
-        FACTORY.close();
-    }
+//    @AfterClass
+//    public static void closeFactory() {
+//        SESSION_FACTORY.close();
+//    }
 
     @Before
     public void clean() {
-        try (Session session = FACTORY.openSession()) {
+        try (Session session = SESSION_FACTORY.openSession()) {
             session.beginTransaction();
             int result = session.createQuery("delete from Reader").executeUpdate();
             System.out.println(result);
@@ -34,7 +34,7 @@ public class ReaderTest {
 
     @Test
     public void checkGetAll() {
-        try (Session session = FACTORY.openSession()) {
+        try (Session session = SESSION_FACTORY.openSession()) {
             List<Reader> list =
                     session.createQuery("select r from Reader r", Reader.class).list();
         }
@@ -42,7 +42,7 @@ public class ReaderTest {
 
     @Test
     public void checkSave() {
-        try (Session session = FACTORY.openSession()) {
+        try (Session session = SESSION_FACTORY.openSession()) {
             UserDetail userDetail = UserDetail.builder()
                     .address("address")
                     .phoneNumber(7777777)

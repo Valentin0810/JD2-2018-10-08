@@ -7,9 +7,9 @@ public enum Role {
     LIBRARIAN("Библиотекарь"),
     ADMIN("Администратор");
 
+    private String description;
+
     Role(String description) {
         this.description = description;
     }
-
-    private String description;
 }

@@ -5,22 +5,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "book_order", schema = "my_library")
@@ -30,12 +30,21 @@ public class BookOrder extends BaseEntity<Long> {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
-    @JoinTable(name = "book_order", schema = "my_library",
-            joinColumns = @JoinColumn(name = "book_order_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id"))
-    private List<Book> books = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
 
     @Column(name = "order_date")
     private LocalDate orderDate;
+
+    @Column(name = "return_date")
+    private LocalDate returnDate;
+
+    @Column(name = "order_type")
+    @Enumerated(EnumType.STRING)
+    private OrderType orderType;
+
+    @Column(name = "order_status")
+    @Enumerated(EnumType.STRING)
+    private OrderType orderStatus;
 }
