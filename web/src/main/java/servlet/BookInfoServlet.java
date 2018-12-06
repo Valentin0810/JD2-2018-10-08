@@ -1,6 +1,6 @@
 package servlet;
 
-import entity.Book;
+import com.varvashevich.entity.Book;
 import service.BookService;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
