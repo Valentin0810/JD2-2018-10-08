@@ -14,7 +14,6 @@ import java.io.Serializable;
 @Setter
 @ToString
 @MappedSuperclass
-
 public abstract class BaseEntity<PK extends Serializable> {
 
     @Id

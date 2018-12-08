@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,11 +20,10 @@ import javax.persistence.Table;
 @ToString(callSuper = true)
 @Entity
 @PrimaryKeyJoinColumn(name = "user_id")
-@Data
 @Table(name = "admin", schema = "my_library")
 public class Admin extends User {
 
-    @Column
+    @Column(name = "e_mail")
     private String eMail;
 
     public Admin(String fullName, UserDetail userDetail, Role role, String login, String password, String eMail) {

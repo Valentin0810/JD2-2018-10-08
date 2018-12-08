@@ -4,7 +4,8 @@ import com.varvashevich.dto.BookFilterDto;
 import com.varvashevich.dto.LimitOffsetDto;
 import com.varvashevich.entity.Genre;
 import com.varvashevich.entity.PublishingHouse;
-import service.BookService;
+import connection.ContextUtil;
+import service.service.BookService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,14 +17,13 @@ import java.io.IOException;
 @WebServlet("/book-filter")
 public class BookFilterServlet extends HttpServlet {
 
-    private BookFilterDto bookFilterDto;
-    private LimitOffsetDto limitOffsetDto;
+    private BookService bookService = ContextUtil.getContext().getBean("bookService", BookService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BookFilterDto filters = BookFilterDto.builder().build();
-
-        req.setAttribute("booksFiltered", BookService.getInstance().filterBooks());
+        LimitOffsetDto limitOffset = LimitOffsetDto.builder().build();
+        req.setAttribute("booksFiltered", bookService.filterBooks(filters, limitOffset));
         getServletContext()
                 .getRequestDispatcher("/WEB-INF/jsp/book-filter.jsp")
                 .forward(req, resp);

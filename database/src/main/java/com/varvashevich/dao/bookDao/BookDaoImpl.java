@@ -11,10 +11,7 @@ import com.varvashevich.entity.Genre;
 import com.varvashevich.entity.Genre_;
 import com.varvashevich.entity.PublishingHouse;
 import com.varvashevich.entity.PublishingHouse_;
-import lombok.AccessLevel;
-
-import lombok.NoArgsConstructor;
-import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -23,14 +20,8 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Repository
 public class BookDaoImpl extends BaseDaoImpl<Long, Book> implements BookDao {
-
-    private static final BookDaoImpl INSTANCE = new BookDaoImpl();
-
-    public static BookDaoImpl getInstance() {
-        return INSTANCE;
-    }
 
     @Override
     public Class<Book> getEntityClass() {
@@ -38,19 +29,19 @@ public class BookDaoImpl extends BaseDaoImpl<Long, Book> implements BookDao {
     }
 
     @Override
-    public List<Book> findByName(Session session, String name) {
-        CriteriaBuilder cb = session.getCriteriaBuilder();
+    public List<Book> findByName(String name) {
+        CriteriaBuilder cb = getSessionFactory().getCurrentSession().getCriteriaBuilder();
         CriteriaQuery<Book> criteria = cb.createQuery(Book.class);
         Root<Book> root = criteria.from(Book.class);
         criteria.select(root).where(
                 cb.equal(root.get(Book_.name), name)
         );
-        return session.createQuery(criteria).list();
+        return getSessionFactory().getCurrentSession().createQuery(criteria).list();
     }
 
     @Override
-    public List<Book> findByAuthor(Session session, Author author) {
-        CriteriaBuilder cb = session.getCriteriaBuilder();
+    public List<Book> findByAuthor(Author author) {
+        CriteriaBuilder cb = getSessionFactory().getCurrentSession().getCriteriaBuilder();
         CriteriaQuery<Book> criteria = cb.createQuery(Book.class);
         Root<Book> root = criteria.from(Book.class);
         SetJoin<Book, Author> authorJoin = root.join(Book_.authors);
@@ -59,12 +50,12 @@ public class BookDaoImpl extends BaseDaoImpl<Long, Book> implements BookDao {
                 cb.equal(authorJoin.get(Author_.name), author.getName())
         );
 
-        return session.createQuery(criteria).list();
+        return getSessionFactory().getCurrentSession().createQuery(criteria).list();
     }
 
     @Override
-    public List<Book> findByGenre(Session session, Genre genre) {
-        CriteriaBuilder cb = session.getCriteriaBuilder();
+    public List<Book> findByGenre(Genre genre) {
+        CriteriaBuilder cb = getSessionFactory().getCurrentSession().getCriteriaBuilder();
         CriteriaQuery<Book> criteria = cb.createQuery(Book.class);
         Root<Book> root = criteria.from(Book.class);
         Join<Book, Genre> bookGenreJoin = root.join(Book_.genre);
@@ -72,12 +63,12 @@ public class BookDaoImpl extends BaseDaoImpl<Long, Book> implements BookDao {
         criteria.select(root).where(
                 cb.equal(bookGenreJoin.get(Genre_.name), genre.getName())
         );
-        return session.createQuery(criteria).list();
+        return getSessionFactory().getCurrentSession().createQuery(criteria).list();
     }
 
     @Override
-    public List<Book> findByPublishingHouse(Session session, PublishingHouse publishingHouse) {
-        CriteriaBuilder cb = session.getCriteriaBuilder();
+    public List<Book> findByPublishingHouse(PublishingHouse publishingHouse) {
+        CriteriaBuilder cb = getSessionFactory().getCurrentSession().getCriteriaBuilder();
         CriteriaQuery<Book> criteria = cb.createQuery(Book.class);
         Root<Book> root = criteria.from(Book.class);
         Join<Book, PublishingHouse> bookPublishingHouseJoin = root.join(Book_.publishingHouse);
@@ -85,34 +76,34 @@ public class BookDaoImpl extends BaseDaoImpl<Long, Book> implements BookDao {
         criteria.select(root).where(
                 cb.equal(bookPublishingHouseJoin.get(PublishingHouse_.name), publishingHouse.getName())
         );
-        return session.createQuery(criteria).list();
+        return getSessionFactory().getCurrentSession().createQuery(criteria).list();
     }
 
     @Override
-    public List<Book> findByYearPublishing(Session session, Integer yearPublishing) {
-        CriteriaBuilder cb = session.getCriteriaBuilder();
+    public List<Book> findByYearPublishing(Integer yearPublishing) {
+        CriteriaBuilder cb = getSessionFactory().getCurrentSession().getCriteriaBuilder();
         CriteriaQuery<Book> criteria = cb.createQuery(Book.class);
         Root<Book> root = criteria.from(Book.class);
 
         criteria.select(root).where(
                 cb.equal(root.get(Book_.yearPublishing), yearPublishing)
         );
-        return session.createQuery(criteria).list();
+        return getSessionFactory().getCurrentSession().createQuery(criteria).list();
     }
 
     @Override
-    public List<Book> filterBooks(Session session, BookFilterDto filters, LimitOffsetDto limitOffset) {
-        CriteriaBuilder cb = session.getCriteriaBuilder();
+    public List<Book> filterBooks(BookFilterDto filters, LimitOffsetDto limitOffset) {
+        CriteriaBuilder cb = getSessionFactory().getCurrentSession().getCriteriaBuilder();
         CriteriaQuery<Book> criteria = cb.createQuery(Book.class);
         Root<Book> root = criteria.from(Book.class);
         Join<Book, Genre> bookGenreJoin = root.join(Book_.genre);
         Join<Book, PublishingHouse> bookPublishingHouseJoin = root.join(Book_.publishingHouse);
-                criteria.select(root).where(
+        criteria.select(root).where(
                 cb.equal(bookGenreJoin.get(Genre_.name), String.valueOf(filters.getGenre().getName())),
                 cb.equal(bookPublishingHouseJoin.get(PublishingHouse_.name), String.valueOf(filters.getPublishingHouse().getName()))
         );
 
-        return session.createQuery(criteria)
+        return getSessionFactory().getCurrentSession().createQuery(criteria)
                 .setMaxResults(limitOffset.getLimit())
                 .setFirstResult(limitOffset.getOffset())
                 .list();
