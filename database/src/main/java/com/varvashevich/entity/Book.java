@@ -17,12 +17,11 @@ import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @Data
 @EqualsAndHashCode(callSuper = true, exclude = {"genre",
         "authors",
         "publishingHouse",
-        "theYearOfPublishing",
+        "yearPublishing",
         "pages",
         "quantity"})
 @ToString
@@ -58,5 +57,4 @@ public class Book extends BaseEntity<Long> {
 
     @Column(name = "quantity")
     private Integer quantity;
-
 }

@@ -1,10 +1,9 @@
 package service.service;
 
-import com.varvashevich.dao.bookDao.BookDao;
-import com.varvashevich.dao.bookDao.BookDaoImpl;
 import com.varvashevich.dto.BookFilterDto;
 import com.varvashevich.dto.LimitOffsetDto;
 import com.varvashevich.entity.Book;
+import com.varvashevich.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,16 +16,16 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class BookService {
 
-    private final BookDaoImpl bookDao;
-
     @Autowired
-    public BookService bookService;
+    private BookRepository bookRepository;
+
+    private BookService bookService;
 
     public List<Book> findAll() {
-        return bookDao.findAll();
+        return bookRepository.findAll();
     }
 
     public List<Book> filterBooks(BookFilterDto filters, LimitOffsetDto limitOffset) {
-        return bookDao.filterBooks(filters, limitOffset);
+        return bookRepository.filterBooks(filters, limitOffset);
     }
 }
