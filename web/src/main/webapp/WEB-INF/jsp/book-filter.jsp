@@ -23,14 +23,14 @@
             </c:forEach>
         </select><br>
         Издательство:
-            <input type="radio" name="publishingHouse" value="АСТ"> АСТ
-            <input type="radio" name="publishingHouse" value="Эксмо"> ЭКСМО
-            <input type="radio" name="publishingHouse" value="Амфора"> Амфора
-            <p>Количество книг в списке</p>
-            <p><input type="number" name="limit" value="1" min="1" max="100" step="1"></p>
+        <input type="radio" name="publishingHouse" value="АСТ"> АСТ
+        <input type="radio" name="publishingHouse" value="Эксмо"> ЭКСМО
+        <input type="radio" name="publishingHouse" value="Амфора"> Амфора
+        <p>Количество книг в списке</p>
+        <p><input type="number" name="limit" value="1" min="1" max="100" step="1"></p>
         <p>Начальная позиция в списке</p>
         <p><input type="number" name="offset" value="0" min="1" max="99" step="1"></p>
-            <input type="submit" value="Поиск">
+        <input type="submit" value="Поиск">
     </form>
 </div>
 </body>

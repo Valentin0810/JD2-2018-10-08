@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @Table(name = "librarian", schema = "my_library")
 public class Librarian extends User {
 
-    @Column
+    @Column(name = "tariff_category")
     private Integer tariffCategory;
 
     public Librarian(String fullName, UserDetail userDetail, Role role, String login, String password, Integer tariffCategory) {

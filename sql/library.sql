@@ -17,7 +17,7 @@ CREATE TABLE my_library.publishing_house (
 );
 
 CREATE TABLE my_library.author (
-  id                SERIAL PRIMARY KEY,
+  id                BIGINT PRIMARY KEY,
   full_name         CHARACTER VARYING(128),
   date_birth        CHARACTER VARYING(128),
   date_death        CHARACTER VARYING(128),
